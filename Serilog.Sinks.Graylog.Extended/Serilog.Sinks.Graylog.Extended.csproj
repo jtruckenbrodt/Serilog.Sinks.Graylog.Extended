@@ -10,9 +10,15 @@
 	<RepositoryUrl>https://github.com/jtruckenbrodt/Serilog.Sinks.Graylog.Extended/</RepositoryUrl>
 	<Authors>RWE Supply and Trading GmbH</Authors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <DocumentationFile>$(OutputPath)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\StrongNameKeySelfSigned.snk</AssemblyOriginatorKeyFile>
+	<SignAssembly>true</SignAssembly>
+	<PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
+	<AssemblyOriginatorKeyFile>..\StrongNameKeySelfSigned.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Serilog" Version="2.6.0" />

@@ -1,8 +1,5 @@
 # Serilog.Sinks.Graylog.Extended
 
-## License
-This project is licensed under [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0) license.
-
 ## Introduction
 This projects aims to make Graylog a comfortable logging sink for [Serilog](https://serilog.net)
 The project and optional dependencies are all .NetStandard 2.0 libraries, so cross platform usage over .Net platforms is ensured.
@@ -39,6 +36,7 @@ using(var log = new LoggerConfiguration()
 
 Further examples can be found in the testing projects.
 
-## Build Status
+# Status [![Build status](https://travis-ci.org/jtruckenbrodt/Serilog.Sinks.Graylog.Extended.svg?branch=master)](https://travis-ci.org/jtruckenbrodt/Serilog.Sinks.Graylog.Extended) [![NuGet Version](https://img.shields.io/nuget/v/Serilog.Sinks.Graylog.Extended.svg?style=flat)](https://www.nuget.org/packages/Serilog.Sinks.Graylog.Extended/)
 
-
+## License
+This project is licensed under [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0) license.
