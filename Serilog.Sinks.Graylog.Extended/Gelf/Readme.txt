@@ -1,0 +1,1 @@
+﻿These are taken from https://github.com/Pliner/EasyGelf (MIT license)

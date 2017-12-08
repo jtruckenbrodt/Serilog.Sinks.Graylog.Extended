@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+	<IsPackable>true</IsPackable>
+	<Title>Serilog Sink for Graylog</Title>
+	<Description>A Serilog sink that writes events to Graylog synchroniously or asynchroniously, utilizing different transports that also works with .NET Core</Description>
+	<PackageIconUrl>https://serilog.net/images/serilog-sink-nuget.png</PackageIconUrl>
+	<PackageTags>serilog;sink;sinks;graylog</PackageTags>
+	<IncludeSymbols>true</IncludeSymbols>
+	<RepositoryUrl>https://github.com/jtruckenbrodt/Serilog.Sinks.Graylog.Extended/</RepositoryUrl>
+	<Authors>RWE Supply and Trading GmbH</Authors>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>$(OutputPath)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\StrongNameKeySelfSigned.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Serilog" Version="2.6.0" />
+    <PackageReference Include="SharpCompress" Version="0.18.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="LoggingConfiguration.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="LogExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Enricher.cs" />
+  </ItemGroup>
+</Project>
