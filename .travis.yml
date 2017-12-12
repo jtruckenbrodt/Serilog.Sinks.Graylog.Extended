@@ -3,7 +3,4 @@ dist: trusty
 sudo: required
 mono: none
 dotnet: 2.0.0
-script:
-  - dotnet restore
-  - dotnet clean
-  - dotnet build ./Serilog.Sinks.Graylog.Extended --configuration Release
+script: ./.travis.build.sh
