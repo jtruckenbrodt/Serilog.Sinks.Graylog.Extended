@@ -58,6 +58,12 @@ if [ "$isRelease" = "true" ]; then
 	set +E # Do not exit with nonzero exit code if anything fails
 
     dotnet nuget push "$buildProjectPath/bin/Release/netstandard2.0/Serilog.Sinks.Graylog.Extended.$assemblyVersion$versionSuffix.nupkg" --source "https://www.nuget.org/api/v2/package" --api-key "$NUGET_API_KEY"
+	
+	echo "Publishing MyGet package"
+	echo
+	
+    dotnet nuget push "$buildProjectPath/bin/Release/netstandard2.0/Serilog.Sinks.Graylog.Extended.$assemblyVersion$versionSuffix.nupkg" --source "https://rwe.myget.org/F/rwest-ect-packages/api/v2/package" --api-key "$MYGET_API_KEY"
+
 fi
 
 echo
