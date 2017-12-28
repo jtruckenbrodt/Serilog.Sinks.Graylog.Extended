@@ -22,7 +22,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Serilog" Version="2.6.0" />
-    <PackageReference Include="SharpCompress" Version="0.18.2" />
+    <PackageReference Include="SharpCompress" Version="0.19.2" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="LoggingConfiguration.cs" />
