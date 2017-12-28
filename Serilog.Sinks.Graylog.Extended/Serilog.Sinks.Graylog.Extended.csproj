@@ -15,7 +15,7 @@
 	<AssemblyOriginatorKeyFile>..\StrongNameKeySelfSigned.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>bin/Debug/netstandard2.0/</OutputPath>
+    <OutputPath>bin/Debug/netstandard2.0</OutputPath>
     <DocumentationFile>obj/Debug/netstandard2.0/Serilog.Sinks.Graylog.Extended.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
