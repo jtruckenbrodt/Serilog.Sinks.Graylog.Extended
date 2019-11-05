@@ -10,6 +10,7 @@ namespace Serilog.Sinks.Graylog.Extended.Transports
 {
     internal sealed class TcpTransport : ITransport
     {
+        private readonly TimeSpan _reconnectInterval = TimeSpan.FromSeconds(10);
         private readonly string _hostName;
         private readonly int _port;
         private readonly bool _useSecureConnection;
@@ -72,7 +73,7 @@ namespace Serilog.Sinks.Graylog.Extended.Transports
                 {
                     _clientStream = _client.GetStream();    
                 }
-                _utcReconnectionTime = DateTime.UtcNow;
+                _utcReconnectionTime = DateTime.UtcNow.Add(_reconnectInterval);
             }
             catch (Exception exception)
             {
