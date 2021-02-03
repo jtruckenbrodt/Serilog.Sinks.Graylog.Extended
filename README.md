@@ -20,7 +20,7 @@ The following snippet will create a new sink:
 ```csharp
 var graylogConfig = new GraylogSinkConfiguration
 {
-    TransportType = TransportType.TCP,
+    GraylogTransportType = GraylogTransportType.TCP,
     Host = "example.graylog.local",
     Port = 12201,
     UseSecureConnection = true,
