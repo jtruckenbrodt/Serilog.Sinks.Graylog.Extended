@@ -29,6 +29,10 @@
     <DocumentationFile>obj/Release/netstandard2.0/Serilog.Sinks.GraylogGelf.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="GitVersion.MsBuild" Version="5.12.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Serilog" Version="3.0.1" />
     <PackageReference Include="SharpCompress" Version="0.33.0" />
   </ItemGroup>
