@@ -132,7 +132,6 @@ namespace Serilog.Sinks.GraylogGelf
                         UriBuilder uriBuilder = new UriBuilder("http", _config.Host, _config.Port);
                         return _transport = new HttpTransport(uriBuilder.Uri, new GelfMessageSerializer());
                     }
-                    break;
                 case TransportType.Tcp:
                     return _transport = new TcpTransport(
                                _config.Host,

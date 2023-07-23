@@ -28,14 +28,17 @@ namespace Serilog.Sinks.GraylogGelf.Transports
         /// 
         /// </summary>
         public int MinMessageSizeBeforeCompressing { get; } = 512;
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UdpTransport"/> class.
         /// </summary>
-        /// <param name="configuration">The <see cref="UdpTransportConfiguration"/> containing all settings used to establish a connection to a GrayLog UDP input.</param>
-        /// <param name="encoder">The <see cref="ITransportEncoder"/> used to chunk messages, exceeding the configured maximum message size.</param>
-        /// <param name="messageSerializer">The <see cref="IGelfMessageSerializer"/> used to generate a byte sequence from a <see cref="GelfMessage"/> instance.</param>
-        /// <exception cref="ArgumentNullException">Thrown if either of <paramref name="configuration"/>, <paramref name="encoder"/> or <paramref name="messageSerializer"/> is <c>NULL</c>.</exception>
+        /// <param name="host">The host.</param>
+        /// <param name="port">The port.</param>
+        /// <param name="messageSerializer">The message serializer.</param>
+        /// <param name="chunkEncoder">The chunk encoder.</param>
+        /// <param name="minMessageSizeBeforeCompressing">The minimum message size before compressing.</param>
+        /// <exception cref="System.ArgumentNullException">messageSerializer</exception>
+        /// <exception cref="System.ArgumentNullException">chunkEncoder</exception>
         public UdpTransport(string host, int port, IGelfMessageSerializer messageSerializer, GelfChunkEncoder chunkEncoder, int minMessageSizeBeforeCompressing)
         {
             _host = host;

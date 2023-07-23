@@ -13,7 +13,7 @@ namespace Serilog.Sinks.GraylogGelf
         /// <summary>
         /// Additional properties to be attached to every GELF message.
         /// </summary>
-        public IDictionary<string, object> AdditionalFields { get; set; }
+        public IDictionary<string, object>? AdditionalFields { get; set; }
 
         /// <summary>
         /// The IP address or host name or complete URI of the Graylog target.
@@ -34,7 +34,7 @@ namespace Serilog.Sinks.GraylogGelf
         /// Gets or sets the minimum log event level.
         /// </summary>
         /// <value>The minimum log event level.</value>
-        public LogEventLevel MinimumLogEventLevel { get; set; } // TODO: Implement
+        public LogEventLevel MinimumLogEventLevel { get; set; }
 
         /// <summary>
         /// Defines minimum size in bytes a single UDP message must be or exceed in order to use compression (GZIP).
@@ -50,7 +50,7 @@ namespace Serilog.Sinks.GraylogGelf
         /// <summary>
         /// An optional <see cref="GraylogPropertyCatalogue"/> used to check property value types.
         /// </summary>
-        public GraylogPropertyCatalogue PropertyCatalog { get; set; }
+        public GraylogPropertyCatalogue? PropertyCatalog { get; set; }
 
         /// <summary>
         /// An optional prefix to be added to each user defined GELF property key.
