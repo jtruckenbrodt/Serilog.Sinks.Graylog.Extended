@@ -8,11 +8,16 @@
 	<PackageTags>serilog;sink;sinks;graylog</PackageTags>
 	<IncludeSymbols>true</IncludeSymbols>
 	<RepositoryUrl>https://github.com/jtruckenbrodt/Serilog.Sinks.Graylog.Extended/</RepositoryUrl>
-	<Authors>RWE Supply and Trading GmbH</Authors>
+	<Authors>RWE Supply and Trading GmbH; AlexNek</Authors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
 	<SignAssembly>true</SignAssembly>
 	<PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
-	<AssemblyOriginatorKeyFile>..\StrongNameKeySelfSigned.snk</AssemblyOriginatorKeyFile>
+	<AssemblyOriginatorKeyFile>..\..\StrongNameKeySelfSigned.snk</AssemblyOriginatorKeyFile>
+	<ApplicationIcon>serilog-graylog-64.ico</ApplicationIcon>
+	<PackageProjectUrl>https://github.com/AlexNek/Serilog.Sinks.GraylogGelf</PackageProjectUrl>
+	<PackageIcon>serilog-graylog-64.png</PackageIcon>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>bin/Debug/netstandard2.0</OutputPath>
@@ -34,5 +39,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Enricher.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="serilog-graylog-64.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\serilog-graylog-64.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 </Project>
