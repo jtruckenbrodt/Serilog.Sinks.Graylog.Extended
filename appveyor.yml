@@ -1,13 +1,26 @@
 version: 1.0.{build}
+pull_requests:
+  do_not_increment_build_number: true
 branches:
   only:
   - master
-
 image: Visual Studio 2022
 configuration: Release
 platform: Any CPU
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  version_prefix: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
 nuget:
   project_feed: true
+  disable_publish_on_pr: true
+before_build:
+- ps: dotnet restore
 build:
   project: '\Src\Serilog.Sinks.GraylogGelf\Serilog.Sinks.GraylogGelf.csproj'
   publish_nuget: true
@@ -20,6 +33,7 @@ deploy:
   auth_token:
     secure: F/19bv2TYoeZ5LhzsKZUeVYgpbI53wUcX8RSHE9+T8CD1Q6tXF+3IBU5xe2YyQQx
   artifact: Serilog.Sinks.GraylogGelf
+  force_update: true
   on:
     branch: master
 - provider: NuGet
@@ -27,3 +41,11 @@ deploy:
     secure: v761W1/T2FLgfDsvdfcLKlQSiutFvocnjwTwig7aNOSB3k9ssE5DG/37t5ejQ5lC
   on:
     branch: master
+notifications:
+- provider: Email
+  to:
+  - alexnek@russinger.com
+  subject: Serilog.Sinks.GraylogGelf build success
+  on_build_success: true
+  on_build_failure: false
+  on_build_status_changed: false
