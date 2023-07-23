@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading;
+
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Extended.Exceptions;
 using Serilog.Sinks.Graylog.Extended.Gelf;
@@ -13,13 +15,15 @@ namespace Serilog.Sinks.Graylog.Extended
     public sealed class GraylogSinkAsync : GraylogSinkBase
     {
         private readonly BlockingCollection<GelfMessage> _buffer;
+
         private readonly Thread _threadForAsyncProcessing;
 
         /// <summary>
         /// Creates a new instance of <see cref="GraylogSinkAsync"/>. 
         /// </summary>
         /// <param name="config">The <see cref="GraylogSinkConfiguration"/> used to configure the Graylog connection.</param>
-        public GraylogSinkAsync(GraylogSinkConfiguration config) : base(config)
+        public GraylogSinkAsync(GraylogSinkConfiguration config)
+            : base(config)
         {
             _buffer = new BlockingCollection<GelfMessage>();
             _threadForAsyncProcessing = new Thread(ListenForMessage)
@@ -33,7 +37,11 @@ namespace Serilog.Sinks.Graylog.Extended
         /// <inheritdoc />
         public override void Emit(LogEvent logEvent)
         {
-            if (_isDisposed) return;
+            if (_isDisposed)
+            {
+                return;
+            }
+
             try
             {
                 var messageBuilder = CreateGelfMessageBuilder(logEvent.RenderMessage(), logEvent.Timestamp.UtcDateTime, logEvent.Level.ToGelfLevel());
@@ -50,8 +58,12 @@ namespace Serilog.Sinks.Graylog.Extended
                 }
 
                 if (_config.PropertyCatalog != null)
+                {
                     CheckLogProperties(logEvent.Properties, messageBuilder);
-                                {
+                }
+                else
+                {
+                    AddCodeDefinedProperties(logEvent.Properties, messageBuilder);
                 }
 
                 _buffer.Add(messageBuilder.ToMessage());
@@ -62,9 +74,42 @@ namespace Serilog.Sinks.Graylog.Extended
             }
         }
 
+        protected override void Dispose(bool isDisposing)
+        {
+            if (!isDisposing || _isDisposed)
+            {
+                return;
+            }
+
+            _cancellationTokenSource.Cancel();
+            var joinTimeSpan = TimeSpan.FromSeconds(1);
+            if (!_threadForAsyncProcessing.Join(joinTimeSpan))
+            {
+                LogError(null, "Gralog logging thread did not stop gracefully within time span {timeSpan}.", joinTimeSpan);
+            }
+
+            base.Dispose(true);
+        }
+
         protected override void SendErrorMessage(GelfMessage msg)
         {
             _buffer.Add(msg);
+        }
+
+        private void AddCodeDefinedProperties(
+            IReadOnlyDictionary<string, LogEventPropertyValue> logEventProperties,
+            GelfMessageBuilder messageBuilder)
+        {
+            foreach (var property in logEventProperties)
+            {
+                if (property.Value != null)
+                {
+                    string value = property.Value.ToString();
+                    value = value.TrimStart('\"');
+                    value = value.TrimEnd('\"');
+                    messageBuilder.SetAdditionalField($"{_config.PropertyPrefix}{property.Key}", value);
+                }
+            }
         }
 
         private void ListenForMessage()
@@ -85,7 +130,7 @@ namespace Serilog.Sinks.Graylog.Extended
                 }
                 catch (GraylogConnectionException ex)
                 {
-                    LogError(ex, "Error while trying to use transport of type {transportType}.", _config.GraylogTransportType);
+                    LogError(ex, "Error while trying to use transport of type {transportType}.", _config.TransportType);
                 }
                 catch (GraylogHttpTransportException ex)
                 {
@@ -126,21 +171,15 @@ namespace Serilog.Sinks.Graylog.Extended
                             $"Cannot send log message after {maxRetries} attempts, giving up. See inner Exceptions for details.",
                             ex);
                     }
+
                     var interval = TimeSpan.FromMilliseconds(_config.RetryIntervalMs ?? GraylogConstants.DefaultRetryIntervalInMs);
-                    if (interval <= TimeSpan.Zero) continue;
+                    if (interval <= TimeSpan.Zero)
+                    {
+                        continue;
+                    }
+
                     Thread.Sleep(_config.RetryIntervalMs ?? GraylogConstants.DefaultRetryIntervalInMs);
                 }
-            }
-        }
-
-        protected override void Dispose(bool isDisposing)
-        {
-            if (!isDisposing || _isDisposed) return;
-            _cancellationTokenSource.Cancel();
-            var joinTimeSpan = TimeSpan.FromSeconds(1);
-            if (!_threadForAsyncProcessing.Join(joinTimeSpan))
-            {
-                LogError(null, "Gralog logging thread did not stop gracefully within time span {timeSpan}.", joinTimeSpan);
             }
             base.Dispose(true);
         }

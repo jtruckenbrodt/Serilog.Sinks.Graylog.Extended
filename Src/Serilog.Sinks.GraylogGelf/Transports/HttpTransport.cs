@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+
 using Serilog.Sinks.Graylog.Extended.Exceptions;
 using Serilog.Sinks.Graylog.Extended.Gelf;
 
@@ -8,9 +9,11 @@ namespace Serilog.Sinks.Graylog.Extended.Transports
 {
     internal sealed class HttpTransport : ITransport, IDisposable
     {
-        private readonly IGelfMessageSerializer _messageSerializer;
         private readonly HttpClient _client;
-        private readonly Uri _uri; 
+
+        private readonly IGelfMessageSerializer _messageSerializer;
+
+        private readonly Uri _uri;
 
         public HttpTransport(Uri uri, IGelfMessageSerializer messageSerializer)
         {
@@ -19,7 +22,13 @@ namespace Serilog.Sinks.Graylog.Extended.Transports
             _client = new HttpClient();
             _client.DefaultRequestHeaders.ExpectContinue = false; // important, cannot be handled by GRAYLOG
             var sp = ServicePointManager.FindServicePoint(_uri);
-            sp.ConnectionLeaseTimeout = 60*1000; // 1 minute
+            sp.ConnectionLeaseTimeout = 60 * 1000; // 1 minute
+            _client.Timeout = TimeSpan.FromSeconds(15);
+        }
+
+        public void Dispose()
+        {
+            _client.SafeDispose();
         }
 
         public void Send(GelfMessage message)
@@ -32,11 +41,6 @@ namespace Serilog.Sinks.Graylog.Extended.Transports
             {
                 throw new GraylogHttpTransportException($"Received status code '{response.Result.StatusCode}' from GrayLog.");
             }
-        }
-
-        public void Dispose()
-        {
-            _client.SafeDispose();
         }
     }
 }

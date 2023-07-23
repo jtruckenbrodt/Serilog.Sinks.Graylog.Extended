@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
+
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Parsing;
@@ -16,10 +17,13 @@ namespace Serilog.Sinks.Graylog.Extended
     /// </summary>
     public abstract class GraylogSinkBase : ILogEventSink, IDisposable
     {
-        private ITransport _transport;
-        protected bool _isDisposed;
-        protected readonly GraylogSinkConfiguration _config;
         protected readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+
+        protected readonly GraylogSinkConfiguration _config;
+
+        protected bool _isDisposed;
+
+        private ITransport _transport;
 
         protected GraylogSinkBase(GraylogSinkConfiguration config)
         {
@@ -32,18 +36,12 @@ namespace Serilog.Sinks.Graylog.Extended
         /// <param name="logEvent">The <see cref="LogEvent"/> to be converted into a GELF message and finally send to Graylog.</param>
         public abstract void Emit(LogEvent logEvent);
 
+        protected abstract void SendErrorMessage(GelfMessage msg);
+
         /// <inheritdoc />
         public void Dispose()
         {
             Dispose(true);
-        }
-
-        protected virtual void Dispose(bool isDisposing)
-        {
-            if (!isDisposing || _isDisposed) return;
-            _transport?.Dispose();
-            _transport = null;
-            _isDisposed = true;
         }
 
         protected void CheckLogProperties(IReadOnlyDictionary<string, LogEventPropertyValue> logEventProperties, GelfMessageBuilder messageBuilder)
@@ -79,17 +77,33 @@ namespace Serilog.Sinks.Graylog.Extended
             }
         }
 
-        private GelfMessage CreatePropertyErrorMessage(GraylogPropertyCheckResult propCheckResult)
+        protected GelfMessageBuilder CreateGelfMessageBuilder(string message, DateTime timeStamp, GelfLevel logLevel)
         {
-            var propertyErrorMessageBuilder = CreateGelfMessageBuilder("Error in property name/type check.", DateTime.UtcNow, GelfLevel.Error);
-            if (string.IsNullOrEmpty(propCheckResult.ExpectedPropertyName)) propertyErrorMessageBuilder.SetAdditionalField($"{_config.PropertyPrefix}expectedPropertyName", propCheckResult.ExpectedPropertyName);
-            if (string.IsNullOrEmpty(propCheckResult.ReceivedPropertyName)) propertyErrorMessageBuilder.SetAdditionalField($"{_config.PropertyPrefix}receivedPropertyName", propCheckResult.ReceivedPropertyName);
-            if (propCheckResult.ExpectedValueType != GraylogPropertyType.Undefined) propertyErrorMessageBuilder.SetAdditionalField($"{_config.PropertyPrefix}expectedPropertyType", propCheckResult.ExpectedValueType.ToString());
-            if (propCheckResult.ReceivedValueType != GraylogPropertyType.Undefined) propertyErrorMessageBuilder.SetAdditionalField($"{_config.PropertyPrefix}receivedPropertyType", propCheckResult.ReceivedValueType.ToString());
-            return propertyErrorMessageBuilder.ToMessage();
+            var messageBuilder = new GelfMessageBuilder(message, Environment.MachineName.ToUpperInvariant(), timeStamp, logLevel);
+            if (_config.AdditionalFields == null)
+            {
+                return messageBuilder;
+            }
+
+            foreach (var kvp in _config.AdditionalFields)
+            {
+                messageBuilder.SetAdditionalField($"{_config.PropertyPrefix}{kvp.Key}", kvp.Value);
+            }
+
+            return messageBuilder;
         }
- 
-        protected abstract void SendErrorMessage(GelfMessage msg);
+
+        protected virtual void Dispose(bool isDisposing)
+        {
+            if (!isDisposing || _isDisposed)
+            {
+                return;
+            }
+
+            _transport?.Dispose();
+            _transport = null;
+            _isDisposed = true;
+        }
 
         protected ITransport GetTransport()
         {
@@ -97,42 +111,60 @@ namespace Serilog.Sinks.Graylog.Extended
             {
                 return _transport;
             }
-            if (_isDisposed) return null;
-            switch (_config.GraylogTransportType)
-            {
-                case GraylogTransportType.Http:
-                    return _transport = new HttpTransport(new Uri(_config.Host), new GelfMessageSerializer());
-                case GraylogTransportType.Tcp:
-                    return _transport = new TcpTransport(_config.Host, _config.Port, _config.UseSecureConnection,
-                        _config.UseNullByteDelimiter, new GelfMessageSerializer());
-                case GraylogTransportType.Udp:
-                    return _transport = new UdpTransport(_config.Host, _config.Port, new GelfMessageSerializer(),
-                        new GelfChunkEncoder(_config.MaxUdpMessageSize ?? GelfConstants.MaxUdpMessageSize),
-                            _config.MinUdpMessageSizeForCompression ?? GelfConstants.MinUdpMessageSizeForCompression);
-                default:
-                    throw new NotSupportedException($"Transport type '{_config.GraylogTransportType}' is not supported!");
-            }
-        }
 
-        protected GelfMessageBuilder CreateGelfMessageBuilder(string message, DateTime timeStamp, GelfLevel logLevel)
-        {
-            var messageBuilder = new GelfMessageBuilder(message, Environment.MachineName.ToUpperInvariant(), timeStamp, logLevel);
-            if (_config.AdditionalProperties == null) return messageBuilder;
-            foreach (var kvp in _config.AdditionalProperties)
+            if (_isDisposed)
             {
-                messageBuilder.SetAdditionalField($"{_config.PropertyPrefix}{kvp.Key}", kvp.Value);
+                return null;
             }
-            return messageBuilder;
+
+            switch (_config.TransportType)
+            {
+                case TransportType.Http:
+                    {
+                        if (_config.Host.Contains("://"))
+                        {
+                            Uri uri = new Uri(_config.Host);
+                            //HttpStyleUriParser parser = new HttpStyleUriParser();
+                            //bool isWellFormedOriginalString = parser.IsWellFormedOriginalString(uri);
+                            return _transport = new HttpTransport(uri, new GelfMessageSerializer());
+                        }
+
+                        UriBuilder uriBuilder = new UriBuilder("http", _config.Host, _config.Port);
+                        return _transport = new HttpTransport(uriBuilder.Uri, new GelfMessageSerializer());
+                    }
+                    break;
+                case TransportType.Tcp:
+                    return _transport = new TcpTransport(
+                               _config.Host,
+                               _config.Port,
+                               _config.UseSecureConnection,
+                               _config.UseNullByteDelimiter,
+                               new GelfMessageSerializer());
+                case TransportType.Udp:
+                    return _transport = new UdpTransport(
+                               _config.Host,
+                               _config.Port,
+                               new GelfMessageSerializer(),
+                               new GelfChunkEncoder(_config.MaxMessageSizeInUdp ?? GelfConstants.MaxUdpMessageSize),
+                               _config.MinUdpMessageSizeForCompression ?? GelfConstants.MinUdpMessageSizeForCompression);
+                default:
+                    throw new NotSupportedException($"Transport type '{_config.TransportType}' is not supported!");
+            }
         }
 
         protected void LogError(Exception ex, string message, params object[] parameters)
         {
-            if (_config.LogErrorSink!= null)
+            if (_config.LogErrorSink != null)
             {
                 var errorMsg = "An error occured while trying to log to Graylog." +
                                Environment.NewLine + string.Format(message, parameters);
-                _config.LogErrorSink.Emit(new LogEvent(DateTimeOffset.UtcNow, LogEventLevel.Error, ex,
-                    new MessageTemplate(errorMsg, Enumerable.Empty<MessageTemplateToken>()), Enumerable.Empty<LogEventProperty>()));
+                _config.LogErrorSink.Emit(
+                    new LogEvent(
+                        DateTimeOffset.UtcNow,
+                        LogEventLevel.Error,
+                        ex,
+                        new MessageTemplate(errorMsg, Enumerable.Empty<MessageTemplateToken>()),
+                        Enumerable.Empty<LogEventProperty>()));
             }
             else if (ex != null)
             {
@@ -142,6 +174,36 @@ namespace Serilog.Sinks.Graylog.Extended
             {
                 Log.Error(message, parameters);
             }
+        }
+
+        private GelfMessage CreatePropertyErrorMessage(GraylogPropertyCheckResult propCheckResult)
+        {
+            var propertyErrorMessageBuilder = CreateGelfMessageBuilder("Error in property name/type check.", DateTime.UtcNow, GelfLevel.Error);
+            if (string.IsNullOrEmpty(propCheckResult.ExpectedPropertyName))
+            {
+                propertyErrorMessageBuilder.SetAdditionalField($"{_config.PropertyPrefix}expectedPropertyName", propCheckResult.ExpectedPropertyName);
+            }
+
+            if (string.IsNullOrEmpty(propCheckResult.ReceivedPropertyName))
+            {
+                propertyErrorMessageBuilder.SetAdditionalField($"{_config.PropertyPrefix}receivedPropertyName", propCheckResult.ReceivedPropertyName);
+            }
+
+            if (propCheckResult.ExpectedValueType != GraylogPropertyType.Undefined)
+            {
+                propertyErrorMessageBuilder.SetAdditionalField(
+                    $"{_config.PropertyPrefix}expectedPropertyType",
+                    propCheckResult.ExpectedValueType.ToString());
+            }
+
+            if (propCheckResult.ReceivedValueType != GraylogPropertyType.Undefined)
+            {
+                propertyErrorMessageBuilder.SetAdditionalField(
+                    $"{_config.PropertyPrefix}receivedPropertyType",
+                    propCheckResult.ReceivedValueType.ToString());
+            }
+
+            return propertyErrorMessageBuilder.ToMessage();
         }
     }
 }

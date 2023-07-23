@@ -2,17 +2,18 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
 	<IsPackable>true</IsPackable>
+	  <LangVersion>11.0</LangVersion>
 	<Title>Serilog Sink for Graylog</Title>
 	<Description>A Serilog sink that writes events to Graylog synchroniously or asynchroniously, utilizing different transports that also works with .NET Core</Description>
-	<PackageIconUrl>https://serilog.net/images/serilog-sink-nuget.png</PackageIconUrl>
 	<PackageTags>serilog;sink;sinks;graylog</PackageTags>
 	<IncludeSymbols>true</IncludeSymbols>
-	<RepositoryUrl>https://github.com/jtruckenbrodt/Serilog.Sinks.Graylog.Extended/</RepositoryUrl>
+	<RepositoryUrl>https://github.com/AlexNek/Serilog.Sinks.GraylogGelf/</RepositoryUrl>
 	<Authors>RWE Supply and Trading GmbH; AlexNek</Authors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
 	<SignAssembly>true</SignAssembly>
 	<PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
 	<AssemblyOriginatorKeyFile>..\..\StrongNameKeySelfSigned.snk</AssemblyOriginatorKeyFile>
+	<Nullable>enable</Nullable>
 	<ApplicationIcon>serilog-graylog-64.ico</ApplicationIcon>
 	<PackageProjectUrl>https://github.com/AlexNek/Serilog.Sinks.GraylogGelf</PackageProjectUrl>
 	<PackageIcon>serilog-graylog-64.png</PackageIcon>
@@ -21,15 +22,15 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>bin/Debug/netstandard2.0</OutputPath>
-    <DocumentationFile>obj/Debug/netstandard2.0/Serilog.Sinks.Graylog.Extended.xml</DocumentationFile>
+    <DocumentationFile>obj/Debug/netstandard2.0/Serilog.Sinks.GraylogGelf.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>bin/Release/netstandard2.0</OutputPath>
-    <DocumentationFile>obj/Release/netstandard2.0/Serilog.Sinks.Graylog.Extended.xml</DocumentationFile>
+    <DocumentationFile>obj/Release/netstandard2.0/Serilog.Sinks.GraylogGelf.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Serilog" Version="2.6.0" />
-    <PackageReference Include="SharpCompress" Version="0.19.2" />
+    <PackageReference Include="Serilog" Version="3.0.1" />
+    <PackageReference Include="SharpCompress" Version="0.33.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="LoggingConfiguration.cs" />
@@ -41,20 +42,6 @@
     <Compile Remove="Enricher.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="serilog-graylog-64.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\LICENSE">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-    <None Include="..\..\README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-    <None Include="..\..\serilog-graylog-64.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
+    <None Remove="serilog-graylog-64.ico" />
   </ItemGroup>
 </Project>

@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Extended.Exceptions;
 using Serilog.Sinks.Graylog.Extended.Gelf;
@@ -16,14 +19,19 @@ namespace Serilog.Sinks.Graylog.Extended
         /// Creates a new instance of <see cref="GraylogSink"/>. 
         /// </summary>
         /// <param name="config">The <see cref="GraylogSinkConfiguration"/> used to configure the Graylog connection.</param>
-        public GraylogSink(GraylogSinkConfiguration config) : base(config)
+        public GraylogSink(GraylogSinkConfiguration config)
+            : base(config)
         {
         }
 
         /// <inheritdoc />
         public override void Emit(LogEvent logEvent)
         {
-            if (_isDisposed) return;
+            if (_isDisposed)
+            {
+                return;
+            }
+
             try
             {
                 var messageBuilder = CreateGelfMessageBuilder(logEvent.RenderMessage(), logEvent.Timestamp.UtcDateTime, logEvent.Level.ToGelfLevel());
@@ -43,6 +51,11 @@ namespace Serilog.Sinks.Graylog.Extended
                 {
                     CheckLogProperties(logEvent.Properties, messageBuilder);
                 }
+                else
+                {
+                    AddCodeDefinedProperties(logEvent.Properties, messageBuilder);
+                }
+
                 try
                 {
                     SendMessage(messageBuilder.ToMessage(), _cancellationTokenSource.Token);
@@ -53,7 +66,7 @@ namespace Serilog.Sinks.Graylog.Extended
                 }
                 catch (GraylogConnectionException ex)
                 {
-                    LogError(ex, "Error while trying to use transport of type {transportType}.", _config.GraylogTransportType);
+                    LogError(ex, "Error while trying to use transport of type {transportType}.", _config.TransportType);
                 }
                 catch (GraylogHttpTransportException ex)
                 {
@@ -82,6 +95,22 @@ namespace Serilog.Sinks.Graylog.Extended
             SendMessage(msg, _cancellationTokenSource.Token);
         }
 
+        private void AddCodeDefinedProperties(
+            IReadOnlyDictionary<string, LogEventPropertyValue> logEventProperties,
+            GelfMessageBuilder messageBuilder)
+        {
+            foreach (var property in logEventProperties)
+            {
+                if (property.Value != null)
+                {
+                    string value = property.Value.ToString();
+                    value = value.TrimStart('\"');
+                    value = value.TrimEnd('\"');
+                    messageBuilder.SetAdditionalField($"{_config.PropertyPrefix}{property.Key}", value);
+                }
+            }
+        }
+
         private void SendMessage(GelfMessage msg, CancellationToken cancelToken)
         {
             var sendRetryCount = _config.RetryCount ?? GraylogConstants.DefaultRetryCount;
@@ -102,12 +131,16 @@ namespace Serilog.Sinks.Graylog.Extended
                             $"Cannot send log message after {maxRetries} attempts, giving up. See inner Exceptions for details.",
                             ex);
                     }
+
                     var interval = TimeSpan.FromMilliseconds(_config.RetryIntervalMs ?? GraylogConstants.DefaultRetryIntervalInMs);
-                    if (interval <= TimeSpan.Zero) continue;
+                    if (interval <= TimeSpan.Zero)
+                    {
+                        continue;
+                    }
+
                     Task.Delay(interval, cancelToken).Wait(cancelToken);
                 }
             }
         }
-
     }
 }
