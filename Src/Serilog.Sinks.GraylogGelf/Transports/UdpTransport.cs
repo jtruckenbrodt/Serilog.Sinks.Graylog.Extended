@@ -3,13 +3,15 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using Serilog.Sinks.Graylog.Extended.Exceptions;
-using Serilog.Sinks.Graylog.Extended.Gelf;
+
+using Serilog.Sinks.GraylogGelf.Exceptions;
+using Serilog.Sinks.GraylogGelf.Gelf;
+
 using SharpCompress.Common;
 using SharpCompress.Writers;
 using SharpCompress.Writers.GZip;
 
-namespace Serilog.Sinks.Graylog.Extended.Transports
+namespace Serilog.Sinks.GraylogGelf.Transports
 {
     /// <summary>
     /// 

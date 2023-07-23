@@ -1,5 +1,5 @@
 ﻿using Serilog;
-using Serilog.Sinks.Graylog.Extended;
+using Serilog.Sinks.GraylogGelf;
 
 namespace ConsoleTestNoConfig
 {

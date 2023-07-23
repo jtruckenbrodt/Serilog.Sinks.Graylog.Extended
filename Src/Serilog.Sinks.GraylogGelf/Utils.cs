@@ -1,8 +1,9 @@
 using System;
-using Serilog.Events;
-using Serilog.Sinks.Graylog.Extended.Gelf;
 
-namespace Serilog.Sinks.Graylog.Extended
+using Serilog.Events;
+using Serilog.Sinks.GraylogGelf.Gelf;
+
+namespace Serilog.Sinks.GraylogGelf
 {
     internal static class Utils
     {

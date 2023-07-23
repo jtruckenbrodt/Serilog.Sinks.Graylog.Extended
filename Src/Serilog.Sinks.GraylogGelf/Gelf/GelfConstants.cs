@@ -1,6 +1,6 @@
-﻿﻿using System;
+﻿ using System;
 
-namespace Serilog.Sinks.Graylog.Extended.Gelf
+ namespace Serilog.Sinks.GraylogGelf.Gelf
 {
     /// <summary>
     /// Defines constants and default values used to generate GELF messages.

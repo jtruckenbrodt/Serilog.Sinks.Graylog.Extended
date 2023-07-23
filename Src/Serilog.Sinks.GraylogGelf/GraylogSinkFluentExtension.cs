@@ -1,7 +1,7 @@
 ﻿using Serilog.Configuration;
 using Serilog.Events;
 
-namespace Serilog.Sinks.Graylog.Extended
+namespace Serilog.Sinks.GraylogGelf
 {    
     /// <summary>
     /// Provides fluent syntax for creating a Graylog sink.

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Serilog.Sinks.Graylog.Extended.Exceptions
+namespace Serilog.Sinks.GraylogGelf.Exceptions
 {
     /// <summary>
     /// Indicates, that a transport connection (TCP or UDP) could not be established to Graylog.

@@ -7,10 +7,10 @@ using System.Threading;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Parsing;
-using Serilog.Sinks.Graylog.Extended.Gelf;
-using Serilog.Sinks.Graylog.Extended.Transports;
+using Serilog.Sinks.GraylogGelf.Gelf;
+using Serilog.Sinks.GraylogGelf.Transports;
 
-namespace Serilog.Sinks.Graylog.Extended
+namespace Serilog.Sinks.GraylogGelf
 {
     /// <summary>
     /// The base class for Graylog sinks containing shared functionality.

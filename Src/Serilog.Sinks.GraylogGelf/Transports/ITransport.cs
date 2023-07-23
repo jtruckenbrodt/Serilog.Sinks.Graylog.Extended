@@ -1,7 +1,8 @@
 using System;
-using Serilog.Sinks.Graylog.Extended.Gelf;
 
-namespace Serilog.Sinks.Graylog.Extended.Transports
+using Serilog.Sinks.GraylogGelf.Gelf;
+
+namespace Serilog.Sinks.GraylogGelf.Transports
 {
     /// <summary>
     /// Represents a single connection to Graylog.

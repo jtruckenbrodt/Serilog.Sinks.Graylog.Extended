@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using Serilog.Events;
 
-namespace Serilog.Sinks.Graylog.Extended
+namespace Serilog.Sinks.GraylogGelf
 {
     /// <summary>
     /// A <see cref="SortedList{TKey,TValue}"/> containing keys and data types to be used when checking for mismatching properties.

@@ -3,7 +3,7 @@
 using Serilog.Core;
 using Serilog.Events;
 
-namespace Serilog.Sinks.Graylog.Extended
+namespace Serilog.Sinks.GraylogGelf
 {
     /// <summary>
     /// Contains the settings for a single Graylog connection.

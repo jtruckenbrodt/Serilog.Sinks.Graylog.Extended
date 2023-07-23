@@ -3,10 +3,11 @@ using System.IO;
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
-using Serilog.Sinks.Graylog.Extended.Exceptions;
-using Serilog.Sinks.Graylog.Extended.Gelf;
 
-namespace Serilog.Sinks.Graylog.Extended.Transports
+using Serilog.Sinks.GraylogGelf.Exceptions;
+using Serilog.Sinks.GraylogGelf.Gelf;
+
+namespace Serilog.Sinks.GraylogGelf.Transports
 {
     internal sealed class TcpTransport : ITransport
     {

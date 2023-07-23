@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using Serilog.Events;
-using Serilog.Sinks.Graylog.Extended.Exceptions;
-using Serilog.Sinks.Graylog.Extended.Gelf;
+using Serilog.Sinks.GraylogGelf.Exceptions;
+using Serilog.Sinks.GraylogGelf.Gelf;
 
-namespace Serilog.Sinks.Graylog.Extended
+namespace Serilog.Sinks.GraylogGelf
 {
     /// <summary>
     /// Represents a single Graylog target into which GELF messages are send synchronously. 

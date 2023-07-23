@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
 
-namespace Serilog.Sinks.Graylog.Extended.Gelf
+namespace Serilog.Sinks.GraylogGelf.Gelf
 {
     /// <summary>
     /// Provides chunking capability for UDP transports as defined in the GELF specification.

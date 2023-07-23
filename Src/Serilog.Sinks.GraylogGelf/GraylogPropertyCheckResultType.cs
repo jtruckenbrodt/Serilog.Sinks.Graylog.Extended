@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Serilog.Sinks.Graylog.Extended
+namespace Serilog.Sinks.GraylogGelf
 {
     /// <summary>
     /// Indicates the result of a single property-value check against a <see cref="GraylogPropertyCatalogue"/>.

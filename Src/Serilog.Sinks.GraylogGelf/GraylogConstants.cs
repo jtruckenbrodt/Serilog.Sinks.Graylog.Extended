@@ -1,4 +1,4 @@
-﻿namespace Serilog.Sinks.Graylog.Extended
+﻿namespace Serilog.Sinks.GraylogGelf
 {
     /// <summary>
     /// Defines constants and default values used throughout this project.

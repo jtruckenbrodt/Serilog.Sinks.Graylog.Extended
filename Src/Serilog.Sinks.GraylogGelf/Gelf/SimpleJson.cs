@@ -58,7 +58,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace Serilog.Sinks.Graylog.Extended.Gelf
+namespace Serilog.Sinks.GraylogGelf.Gelf
 {
     internal class JsonArray : List<object>
     {

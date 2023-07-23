@@ -1,4 +1,4 @@
-﻿namespace Serilog.Sinks.Graylog.Extended
+﻿namespace Serilog.Sinks.GraylogGelf
 {
     /// <summary>
     /// Contains the result of checking a key-value pair against a <see cref="GraylogPropertyCatalogue"/>.

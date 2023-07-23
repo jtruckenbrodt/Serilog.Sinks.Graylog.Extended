@@ -1,4 +1,4 @@
-﻿namespace Serilog.Sinks.Graylog.Extended
+﻿namespace Serilog.Sinks.GraylogGelf
 {
     /// <summary>
     /// Defines the supported transports used to connect to Graylog.

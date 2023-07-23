@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 
 using Serilog.Configuration;
-using Serilog.Core;
 using Serilog.Events;
 
-namespace Serilog.Sinks.Graylog.Extended
+namespace Serilog.Sinks.GraylogGelf
 {
     /// <summary>
     /// Class LoggerConfigurationGrayLogExtensions.

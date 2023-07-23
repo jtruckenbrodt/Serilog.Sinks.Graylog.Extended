@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Serilog.Sinks.Graylog.Extended.Exceptions
+namespace Serilog.Sinks.GraylogGelf.Exceptions
 {
     /// <summary>
     /// Indicates, that a GELF message could not be send after certain amount of retries at all.

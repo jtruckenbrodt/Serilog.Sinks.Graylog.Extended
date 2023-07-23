@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 
-namespace Serilog.Sinks.Graylog.Extended.Gelf
+namespace Serilog.Sinks.GraylogGelf.Gelf
 {
     internal sealed class GelfMessageSerializer : IGelfMessageSerializer
     {

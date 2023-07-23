@@ -2,10 +2,10 @@
 using System.Net;
 using System.Net.Http;
 
-using Serilog.Sinks.Graylog.Extended.Exceptions;
-using Serilog.Sinks.Graylog.Extended.Gelf;
+using Serilog.Sinks.GraylogGelf.Exceptions;
+using Serilog.Sinks.GraylogGelf.Gelf;
 
-namespace Serilog.Sinks.Graylog.Extended.Transports
+namespace Serilog.Sinks.GraylogGelf.Transports
 {
     internal sealed class HttpTransport : ITransport, IDisposable
     {

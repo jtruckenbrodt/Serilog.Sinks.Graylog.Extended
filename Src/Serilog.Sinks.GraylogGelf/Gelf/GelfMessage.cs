@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Serilog.Sinks.Graylog.Extended.Gelf
+namespace Serilog.Sinks.GraylogGelf.Gelf
 {
     /// <summary>
     /// Represnets a single GELF message.

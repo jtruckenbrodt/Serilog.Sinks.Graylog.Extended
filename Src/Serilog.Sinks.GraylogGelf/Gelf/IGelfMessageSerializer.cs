@@ -1,4 +1,4 @@
-﻿namespace Serilog.Sinks.Graylog.Extended.Gelf
+﻿namespace Serilog.Sinks.GraylogGelf.Gelf
 {
     internal interface IGelfMessageSerializer
     {

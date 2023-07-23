@@ -1,4 +1,4 @@
-namespace Serilog.Sinks.Graylog.Extended.Gelf
+namespace Serilog.Sinks.GraylogGelf.Gelf
 {
     /// <summary>
     /// Contains the supported GELF log levels
