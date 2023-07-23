@@ -65,19 +65,7 @@ namespace Serilog.Sinks.Graylog.Extended
                                   AdditionalFields = additionalFields,
                               };
 
-            return loggerSinkConfiguration.Graylog(options);
-        }
-
-        /// <summary>
-        /// Graylogs the specified options.
-        /// </summary>
-        /// <param name="loggerSinkConfiguration">The logger sink configuration.</param>
-        /// <param name="options">The options.</param>
-        /// <returns></returns>
-        public static LoggerConfiguration GraylogGelf(this LoggerSinkConfiguration loggerSinkConfiguration, GraylogSinkConfiguration options)
-        {
-            var sink = (ILogEventSink)new GraylogSink(options);
-            return loggerSinkConfiguration.Sink(sink, options.MinimumLogEventLevel);
+            return loggerSinkConfiguration.Graylog(options, options.MinimumLogEventLevel);
         }
     }
 }
