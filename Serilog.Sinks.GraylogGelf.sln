@@ -17,6 +17,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleTestNoConfig", "Src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleTestConfig", "Src\ConsoleTestConfig\ConsoleTestConfig.csproj", "{2CC35EF2-C130-478B-ABA4-CE679D15BE53}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{FD5B5F4C-F890-48A4-A528-A00ED0776D86}"
+	ProjectSection(SolutionItems) = preProject
+		Documentation\graylog.md = Documentation\graylog.md
+		README.md = README.md
+		Documentation\serilog.md = Documentation\serilog.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +45,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FD5B5F4C-F890-48A4-A528-A00ED0776D86} = {ECAD5F81-7EBB-4864-B25D-5BB1938BC30D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D9EBD3A7-FC30-4505-9927-B53366289AAD}
