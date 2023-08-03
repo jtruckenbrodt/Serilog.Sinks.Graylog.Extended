@@ -24,6 +24,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		Documentation\serilog.md = Documentation\serilog.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorLogTest", "BlazorLogTest\BlazorLogTest.csproj", "{4B0CD829-2ADF-4198-A1EA-699A2DA70EF4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{BEC074A1-23F8-4B90-B87C-B1114022E326}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,12 +46,19 @@ Global
 		{2CC35EF2-C130-478B-ABA4-CE679D15BE53}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CC35EF2-C130-478B-ABA4-CE679D15BE53}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CC35EF2-C130-478B-ABA4-CE679D15BE53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B0CD829-2ADF-4198-A1EA-699A2DA70EF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B0CD829-2ADF-4198-A1EA-699A2DA70EF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B0CD829-2ADF-4198-A1EA-699A2DA70EF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B0CD829-2ADF-4198-A1EA-699A2DA70EF4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{712005A0-FD92-4DB4-9DBD-9DB35663873D} = {BEC074A1-23F8-4B90-B87C-B1114022E326}
+		{2CC35EF2-C130-478B-ABA4-CE679D15BE53} = {BEC074A1-23F8-4B90-B87C-B1114022E326}
 		{FD5B5F4C-F890-48A4-A528-A00ED0776D86} = {ECAD5F81-7EBB-4864-B25D-5BB1938BC30D}
+		{4B0CD829-2ADF-4198-A1EA-699A2DA70EF4} = {BEC074A1-23F8-4B90-B87C-B1114022E326}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D9EBD3A7-FC30-4505-9927-B53366289AAD}
