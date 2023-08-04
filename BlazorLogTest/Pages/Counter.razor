@@ -1,5 +1,7 @@
 ﻿@page "/counter"
 
+@inject ILoggerFactory LoggerFactory
+
 <PageTitle>Counter</PageTitle>
 
 <h1>Counter</h1>
@@ -10,9 +12,17 @@
 
 @code {
     private int currentCount = 0;
+    ILogger<Counter> logger;
 
     private void IncrementCount()
     {
+        logger.LogInformation("IncrementCount {count}", currentCount);
         currentCount++;
+    }
+
+    protected override void OnInitialized()
+    {
+        logger = LoggerFactory.CreateLogger<Counter>();
+        logger.LogInformation("OnInitialized");
     }
 }

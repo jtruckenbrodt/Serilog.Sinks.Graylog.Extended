@@ -11,10 +11,7 @@ namespace BlazorLogTest
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            builder.Services.AddRazorPages();
-            builder.Services.AddServerSideBlazor();
-            builder.Services.AddSingleton<WeatherForecastService>();
+            AddServices(builder.Services);
 
             builder.Host.UseSerilog((hostContext, services, loggerConfiguration) =>
                 {
@@ -45,6 +42,14 @@ namespace BlazorLogTest
             app.MapFallbackToPage("/_Host");
 
             app.Run();
+        }
+
+        private static void AddServices(IServiceCollection services)
+        {
+            // Add services to the container.
+            services.AddRazorPages();
+            services.AddServerSideBlazor();
+            services.AddSingleton<WeatherForecastService>();
         }
     }
 }
