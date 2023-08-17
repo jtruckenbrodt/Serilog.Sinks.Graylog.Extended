@@ -11,7 +11,7 @@ Sinks are how you direct where you want your logs sent. The most popular of the 
 With enrichers you can add additional log properties. It could be: thread id, class name, Machine name and so on.
 
 ## Microsoft.Extensions.Logging (MEL)
-If you use microsoft .NET you will have automatically configured logging. It is exists of implmentation of ILgerFactory and implmentations of ILoggerProvider
+If you use microsoft .NET application you will have automatically configured logging. It is exists of implementation of `ILogerFactory` and implementations of `ILoggerProvider`  
 ![image](pics/mel.png)
 
 ILoggerFactory could have more that one ILoggerProvider.
