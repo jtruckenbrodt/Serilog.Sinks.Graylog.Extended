@@ -26,7 +26,7 @@ With `Serilog.Extensions.Logging` package Serilog can use MEL interfaces, which 
 As you can see the concept is slightly different. MEL uses LoggerProvider for each output type, while Serilog uses sink.
 Something that you may not have known, with Serilog you can use the same providers as with MEL, but you can only add it from the source code (not from the config file).
 
-## Setting main logger provider
+## Set main logger provider
 In .NET Core, by default, if you do nothing, MEL will be the default logging system.
 ![image](pics/serilog-init.png)
 
@@ -69,7 +69,7 @@ Log.Logger = new LoggerConfiguration()
                 .CreateLogger();
 ```
 
-> **Note 1**: Configuration extension method could be found into  package. [`Serilog.Settings.Configuration`](https://github.com/serilog/serilog-settings-configuration). You can manage reading configuration over serilog too, see "Example application" link.
+> **Note**: Configuration extension method could be found into  package. [`Serilog.Settings.Configuration`](https://github.com/serilog/serilog-settings-configuration). You can manage reading configuration over serilog too, see "Example application" link. Sometimes you can use step 2 only.
 
 ![image](pics/serilog-create.png)
 
@@ -97,7 +97,7 @@ var app = builder.Build();
 ```
 
 
-Pay attention that you can use serilog in 3 different ways.
+Pay attention that you can use serilog in 3 different ways as was written before.
 
 
 ## How to enable Serilog’s own internal debug logging
@@ -144,4 +144,3 @@ One of the best uses of structured logging is on exceptions. Trying to figure ou
 
 
  - [Adding a Logger With the .NET 6 Minimal Hosting Model](https://onloupe.com/blog/how-to-config-logger-net6-startup/)
- - [Bootstrap logging with Serilog + ASP.NET Core](https://nblumhardt.com/2020/10/bootstrap-logger/)
