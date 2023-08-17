@@ -30,7 +30,12 @@ Something that you may not have known, with Serilog you can use the same provide
 In .NET Core, by default, if you do nothing, MEL will be the default logging system.
 ![image](pics/serilog-init.png)
 
-You can add serilog to application in different ways: as additional provider to MEL (`AddSerilog`), as single serilog provider (`UseSerilog`) or as standalone serilog logger (`Log.Logger = ...`).
+You can add serilog to application in different ways:  
+ - as additional provider to MEL (`AddSerilog`),
+ - as single serilog provider (`UseSerilog`) under MEL,
+ - as standalone serilog logger (`Log.Logger = ...`).
+
+In addition, every way could be initialized differently too.
 ![image](pics/serilog-overview.png)
 
 You can use Serilog logger in different ways too:
@@ -38,11 +43,11 @@ You can use Serilog logger in different ways too:
  - as injectable `ILoggerFactory loggerFactory` variable in constructor. Then create logger with context `ILogger<ClassName> logger = loggerFactory.CreateLogger<ClassName>();`
  - as class member `Serilog.ILogger _logger = Log.ForContext<ClassName>();`
 
-In all cases will be used context as `ClassName`.
+In all cases will be used context `ClassName`.
 
 ## Configuration
 Serilog is immutable by default. This mean that you cannot change settings after initialization. From other side you cannot initialize serilog immediately after program beginning as some services are not initialized (like configuration service). If you want to have logging immediately after program beginning you need to use two steps initialization:
-1. LoggerConfiguration with CreateBootstrapLoggger() and source code initialization like:
+1. Create LoggerConfiguration with CreateBootstrapLoggger() and source code initialization like this:
 ```
 var bootstrapSerilogLogger = new LoggerConfiguration()
     .MinimumLevel.Debug()
@@ -51,7 +56,7 @@ var bootstrapSerilogLogger = new LoggerConfiguration()
 ```
 > **Note**: CreateBootstrapLoggger could be found into `Serilog.Extensions.Hosting` package
 
-2. LoggerConfiguration with CreateLoggger() where all parameters could be read from current configuration:
+2. Create LoggerConfiguration with CreateLoggger() where all parameters could be read from current configuration:
 
 ```
 var configuration = new ConfigurationBuilder()
@@ -64,7 +69,7 @@ Log.Logger = new LoggerConfiguration()
                 .CreateLogger();
 ```
 
-> **Note 1**: Configuration extension method could be found into  package. [`Serilog.Settings.Configuration`](https://github.com/serilog/serilog-settings-configuration). You can manage reading configuration over serilog too, see link.
+> **Note 1**: Configuration extension method could be found into  package. [`Serilog.Settings.Configuration`](https://github.com/serilog/serilog-settings-configuration). You can manage reading configuration over serilog too, see "Example application" link.
 
 ![image](pics/serilog-create.png)
 
@@ -92,7 +97,7 @@ var app = builder.Build();
 ```
 
 
-Pay attention that you can use serilog as single standalone debugger (_UseSerilog_) or as additional logging provider (_AddSerilog_) to microsoft logging.
+Pay attention that you can use serilog in 3 different ways.
 
 
 ## How to enable Serilog’s own internal debug logging
@@ -116,27 +121,27 @@ It is possible to clear all default providers: `builder.Logging.ClearProviders()
 ## TIP: Log extra fields on exceptions!
 One of the best uses of structured logging is on exceptions. Trying to figure out why an exception happened is infinitely easier if you know more details about who the user was, input parameters, etc.
     
-```
-try
+```csharp
+    try
     {
         //do something
     }
     catch (Exception ex)
     {
-        log.Error("Error trying to do something", new { clientid = 54732, user = "matt" }, ex);
+        log.Error("Error trying to do something", new { clientid = 12345, user = "sample" }, ex);
     }
 ```
 
 ## Useful links
-[Serilog](https://github.com/serilog/serilog)
-[Provided Sinks](https://github.com/serilog/serilog/wiki/Provided-Sinks)
-[Developing a sink](https://github.com/serilog/serilog/wiki/Developing-a-sink)
-[Bootstrap logging with Serilog](https://nblumhardt.com/2020/10/bootstrap-logger/)
-[Serilog blog](https://nblumhardt.com/)
-[Logging in .NET Core and ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-7.0)
-[ASP.NET Core Blazor logging](https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/logging?view=aspnetcore-7.0)
-[Serilog Logging in ASP.NET Core](https://referbruv.com/blog/how-to-serilog-logging-in-asp-net-core/)
+ - [Serilog](https://github.com/serilog/serilog)
+ - [Provided Sinks](https://github.com/serilog/serilog/wiki/Provided-Sinks)
+ - [Developing a sink](https://github.com/serilog/serilog/wiki/Developing-a-sink)
+ - [Bootstrap logging with Serilog](https://nblumhardt.com/2020/10/bootstrap-logger/)
+ - [Serilog blog](https://nblumhardt.com/)
+ - [Logging in .NET Core and ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-7.0)
+ - [ASP.NET Core Blazor logging](https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/logging?view=aspnetcore-7.0)
+ - [Serilog Logging in ASP.NET Core](https://referbruv.com/blog/how-to-serilog-logging-in-asp-net-core/)
 
 
-[Adding a Logger With the .NET 6 Minimal Hosting Model](https://onloupe.com/blog/how-to-config-logger-net6-startup/)
-[Bootstrap logging with Serilog + ASP.NET Core](https://nblumhardt.com/2020/10/bootstrap-logger/)
+ - [Adding a Logger With the .NET 6 Minimal Hosting Model](https://onloupe.com/blog/how-to-config-logger-net6-startup/)
+ - [Bootstrap logging with Serilog + ASP.NET Core](https://nblumhardt.com/2020/10/bootstrap-logger/)
