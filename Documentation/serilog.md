@@ -11,17 +11,18 @@ Sinks are how you direct where you want your logs sent. The most popular of the 
 With enrichers you can add additional log properties. It could be: thread id, class name, Machine name and so on.
 
 ## Microsoft.Extensions.Logging (MEL)
-If you use microsoft .NET application you will have automatically configured logging. It is exists of implementation of `ILogerFactory` and implementations of `ILoggerProvider`  
+If you use microsoft .NET application you will have automatically configured logging. It is exists of implementation of `ILoggerFactory` and implementations of `ILoggerProvider`  
 ![image](pics/mel.png)
 
-ILoggerFactory could have more that one ILoggerProvider.
+`ILoggerFactory` could have more that one `ILoggerProvider`.
 It is possible to add custom logging provider like serilog.
 
 ## Serilog
 
 Serilog could be used as standalone logging provider with `Log.Logger` and `ILogger logger = Log.ForContext<ClassName>();`.
 With `Serilog.Extensions.Logging` package Serilog can use MEL interfaces, which is why it can be used in conjunction with MEL.
-![image](pics/serilog_mel.png)
+![image](pics/serilog_mel.png)  
+
 As you can see the concept is slightly different. MEL uses LoggerProvider for each output type, while Serilog uses sink.
 Something that you may not have known, with Serilog you can use the same providers as with MEL, but you can only add it from the source code (not from the config file).
 
@@ -32,12 +33,12 @@ In .NET Core, by default, if you do nothing, MEL will be the default logging sys
 You can add serilog to application in different ways: as additional provider to MEL (`AddSerilog`), as single serilog provider (`UseSerilog`) or as standalone serilog logger (`Log.Logger = ...`).
 ![image](pics/serilog-overview.png)
 
-You can call serilog from application in different ways too:
- - as injectable `ILogger<ClassName> logger`
- - as injectable `ILoggerFactory loggerFactory`, `ILogger<ClassName> logger = loggerFactory.CreateLogger<ClassName>();`
+You can use Serilog logger in different ways too:
+ - as injectable `ILogger<ClassName> logger` variable in constructor. Then copy it as class member.
+ - as injectable `ILoggerFactory loggerFactory` variable in constructor. Then create logger with context `ILogger<ClassName> logger = loggerFactory.CreateLogger<ClassName>();`
  - as class member `Serilog.ILogger _logger = Log.ForContext<ClassName>();`
 
-In all casses will be used context as `ClassName`
+In all cases will be used context as `ClassName`.
 
 ## Configuration
 Serilog is immutable by default. This mean that you cannot change settings after initialization. From other side you cannot initialize serilog immediately after program beginning as some services are not initialized (like configuration service). If you want to have logging immediately after program beginning you need to use two steps initialization:
