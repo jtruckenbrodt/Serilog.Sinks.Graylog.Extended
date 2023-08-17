@@ -3,6 +3,7 @@
 ## Introduction
 This projects aims to make Graylog a comfortable logging sink for [Serilog](https://serilog.net)
 The project and optional dependencies are all .NetStandard 2.0 libraries, so cross platform usage over .Net platforms is ensured.
+More information about [Graylog](Documentation/graylog.md) or [Serilog](Documentation/serilog.md).
 
 ## Features
 - Support for Graylog Extended Log Format (GELF) 1.1
